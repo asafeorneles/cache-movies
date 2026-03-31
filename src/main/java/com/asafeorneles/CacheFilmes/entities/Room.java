@@ -18,7 +18,10 @@ import java.util.UUID;
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "room_id")
     private UUID roomId;
+
+    @Column(name = "room_name")
     private String roomName;
     private int rows;
     private int columns;

@@ -14,16 +14,20 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "tb_seats", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "room_id", "row", "column")
+        @UniqueConstraint(columnNames = {"room_id", "row", "column"})
 })
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "seat_id")
     private UUID seatId;
+
+    @Column(name = "seat_name")
     private String seatName;
     private String row;
     private String column;
+
     @ManyToOne
-    @JoinColumn(name = "roomId")
+    @JoinColumn(name = "room_dd")
     private Room room;
 }

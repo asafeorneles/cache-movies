@@ -20,12 +20,16 @@ import java.util.UUID;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "reservation_id")
     private UUID reservationId;
+
     @OneToMany(mappedBy = "reservation")
     private List<SeatReservation> seatReservation;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
-    private LocalDateTime expiresAt;
-    private LocalDateTime expirationTime; // Tempo até o usuário realizar o pagamento.
+
+    @Column(name = "reservation_date")
+    private LocalDateTime reservationDate;
+    private LocalDateTime expiresAt; // Tempo até o usuário realizar o pagamento.
 }

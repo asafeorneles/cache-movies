@@ -17,6 +17,7 @@ import java.util.UUID;
 public class SeatReservation {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "seat_reservation_id")
     private UUID seatReservationId;
 
     @ManyToOne
