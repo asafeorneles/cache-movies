@@ -11,7 +11,7 @@ public enum MovieAgeRating {
     M_16("+16"),
     M_18("+18");
 
-    String ageRating;
+    final String ageRating;
 
     MovieAgeRating(String ageRating){
         this.ageRating = ageRating;
