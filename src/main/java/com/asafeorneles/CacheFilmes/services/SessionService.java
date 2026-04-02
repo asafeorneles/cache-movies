@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class SessionService {
@@ -56,5 +59,29 @@ public class SessionService {
                 session.getSessionType(),
                 session.getSessionFormat()
         );
+    }
+
+    public List<SessionResponse> listAll() {
+        return sessionRepository.findAll()
+                .stream()
+                .map(session -> new SessionResponse(
+                                session.getSessionId(),
+                                session.getMovie().getMovieId(),
+                                session.getMovie().getName(),
+                                session.getRoom().getRoomId(),
+                                session.getRoom().getName(),
+                                session.getStartTime(),
+                                session.getEndTime(),
+                                session.getSessionType(),
+                                session.getSessionFormat()
+                        )
+                )
+                .toList();
+    }
+
+    public void delete(UUID id) {
+        Session session = sessionRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        sessionRepository.delete(session);
     }
 }
