@@ -1,6 +1,5 @@
 package com.asafeorneles.CacheFilmes.dtos;
 
-import com.asafeorneles.CacheFilmes.enums.MovieAgeRating;
 import com.asafeorneles.CacheFilmes.enums.MovieGenre;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public record MovieResponse(
         String name,
         Integer duration,
         MovieGenre movieGenre,
-        MovieAgeRating movieAgeRating,
+        String  movieAgeRating,
         List<SessionResponse> sessions
 ) {
 }

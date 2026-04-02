@@ -32,7 +32,7 @@ public class MovieService {
                 movie.getName(),
                 movie.getDuration(),
                 movie.getMovieGenre(),
-                movie.getMovieAgeRating(),
+                movie.getMovieAgeRating().getAgeRating(),
                 null
         );
     }
@@ -46,7 +46,7 @@ public class MovieService {
                         movie.getName(),
                         movie.getDuration(),
                         movie.getMovieGenre(),
-                        movie.getMovieAgeRating(),
+                        movie.getMovieAgeRating().getAgeRating(),
                         movie.getSessions()
                                 .stream()
                                 .map(session -> new SessionResponse(
@@ -58,7 +58,7 @@ public class MovieService {
                                                 session.getStartTime(),
                                                 session.getEndTime(),
                                                 session.getSessionType(),
-                                                session.getSessionFormat()
+                                                session.getSessionFormat().getFormat()
                                         )
                                 )
                                 .toList()

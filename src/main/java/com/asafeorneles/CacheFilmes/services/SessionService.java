@@ -57,7 +57,7 @@ public class SessionService {
                 session.getStartTime(),
                 session.getEndTime(),
                 session.getSessionType(),
-                session.getSessionFormat()
+                session.getSessionFormat().getFormat()
         );
     }
 
@@ -73,7 +73,7 @@ public class SessionService {
                                 session.getStartTime(),
                                 session.getEndTime(),
                                 session.getSessionType(),
-                                session.getSessionFormat()
+                                session.getSessionFormat().getFormat()
                         )
                 )
                 .toList();
