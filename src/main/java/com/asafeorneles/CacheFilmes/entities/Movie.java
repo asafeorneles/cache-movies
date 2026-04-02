@@ -35,6 +35,6 @@ public class Movie {
     @Enumerated(EnumType.STRING)
     private MovieAgeRating movieAgeRating;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<Session> sessions;
 }
