@@ -71,6 +71,8 @@ CREATE TABLE tb_seat_reservations
     seat_reservation_id BINARY(16) PRIMARY KEY,
     reservation_id      BINARY(16) NOT NULL,
     seat_id             BINARY(16) NOT NULL,
+    session_id          BINARY(16) NOT NULL,
+    status              VARCHAR(50) NOT NULL,
 
     CONSTRAINT fk_sr_reservation
         FOREIGN KEY (reservation_id) REFERENCES tb_reservations (reservation_id),
@@ -78,6 +80,9 @@ CREATE TABLE tb_seat_reservations
     CONSTRAINT fk_sr_seat
         FOREIGN KEY (seat_id) REFERENCES tb_seats (seat_id),
 
+    CONSTRAINT fk_sr_session
+        FOREIGN KEY (session_id) REFERENCES tb_sessions (session_id),
+
     CONSTRAINT uk_seat_reservation
-        UNIQUE (reservation_id, seat_id)
+        UNIQUE (reservation_id, seat_id, session_id)
 );
