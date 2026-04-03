@@ -2,7 +2,7 @@ package com.asafeorneles.CacheFilmes.enums;
 
 public enum ReservationStatus {
     PENDING,
-    CONFIRMED,
+    PAID,
     EXPIRED,
     FINISHED
 }
