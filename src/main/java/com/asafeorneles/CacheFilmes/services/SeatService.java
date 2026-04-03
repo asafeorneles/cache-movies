@@ -1,5 +1,6 @@
 package com.asafeorneles.CacheFilmes.services;
 
+import com.asafeorneles.CacheFilmes.dtos.SeatDetailsResponse;
 import com.asafeorneles.CacheFilmes.dtos.SeatResponse;
 import com.asafeorneles.CacheFilmes.entities.Room;
 import com.asafeorneles.CacheFilmes.entities.Seat;
@@ -7,7 +8,10 @@ import com.asafeorneles.CacheFilmes.repositories.SeatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -68,6 +72,14 @@ public class SeatService {
         return seats.stream()
                 .map(seat -> new SeatResponse(seat.getSeatName()))
                 .sorted(Comparator.comparing(SeatResponse::name))
+                .toList();
+    }
+
+    public List<SeatDetailsResponse> listAllByRoom(UUID roomId) {
+        return seatRepository.findByRoom_RoomId(roomId)
+                .stream()
+                .map(seat -> new SeatDetailsResponse(seat.getSeatId(), seat.getSeatName(), roomId, seat.getRowNumber(), seat.getColumnNumber()))
+                .sorted(Comparator.comparing(SeatDetailsResponse::name))
                 .toList();
     }
 }
