@@ -1,5 +1,6 @@
 package com.asafeorneles.CacheFilmes.entities;
 
+import com.asafeorneles.CacheFilmes.enums.SeatStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,13 @@ public class SeatReservation {
     private Reservation reservation;
 
     @ManyToOne
+    @JoinColumn(name = "session_id", nullable = false)
+    private Session session;
+
+    @ManyToOne
     @JoinColumn(name = "seat_id", nullable = false)
     private Seat seat;
+
+    @Enumerated(EnumType.STRING)
+    private SeatStatus status;
 }
