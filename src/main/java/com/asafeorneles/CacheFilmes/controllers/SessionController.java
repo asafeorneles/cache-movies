@@ -1,7 +1,9 @@
 package com.asafeorneles.CacheFilmes.controllers;
 
+import com.asafeorneles.CacheFilmes.dtos.SeatResponse;
 import com.asafeorneles.CacheFilmes.dtos.SessionRequest;
 import com.asafeorneles.CacheFilmes.dtos.SessionResponse;
+import com.asafeorneles.CacheFilmes.entities.Seat;
 import com.asafeorneles.CacheFilmes.services.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,8 +31,14 @@ public class SessionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(sessions);
     }
 
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<SessionResponse> listById(@PathVariable(name = "id") UUID id){
+        SessionResponse sessionResponse = sessionService.listById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(sessionResponse);
+    }
+
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> listAll(@PathVariable(name = "id") UUID id){
+    public ResponseEntity<Void> delete(@PathVariable(name = "id") UUID id){
         sessionService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

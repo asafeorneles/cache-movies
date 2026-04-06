@@ -30,6 +30,7 @@ public class SessionService {
         // Verificar se a data de inicio da sessão é depois de hoje
         // Verificar se a hora de término da sessão é maior do que o início + a duração do filme...
         // regra pra evitar duas sessões na mesma sala e no mesmo horário
+        // Talvez marcar a sessão como finalizada e criar métodos pra verificar isso...
 
         Movie movie = movieRepository.findById(sessionRequest.movieId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
@@ -83,5 +84,22 @@ public class SessionService {
         Session session = sessionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
         sessionRepository.delete(session);
+    }
+
+    public SessionResponse listById(UUID id) {
+        return sessionRepository.findById(id)
+                .map(session -> new SessionResponse(
+                        session.getSessionId(),
+                        session.getMovie().getMovieId(),
+                        session.getMovie().getName(),
+                        session.getRoom().getRoomId(),
+                        session.getRoom().getName(),
+                        session.getStartTime(),
+                        session.getEndTime(),
+                        session.getSessionType(),
+                        session.getSessionFormat().getFormat()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+
+
     }
 }
