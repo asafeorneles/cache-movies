@@ -69,7 +69,7 @@ CREATE TABLE tb_reservations
 CREATE TABLE tb_seat_reservations
 (
     seat_reservation_id BINARY(16) PRIMARY KEY,
-    reservation_id      BINARY(16) NOT NULL,
+    reservation_id      BINARY(16),
     seat_id             BINARY(16) NOT NULL,
     session_id          BINARY(16) NOT NULL,
     status              VARCHAR(50) NOT NULL,
