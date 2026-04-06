@@ -22,7 +22,7 @@ public class SeatReservation {
     private UUID seatReservationId;
 
     @ManyToOne
-    @JoinColumn(name = "reservation_id", nullable = false)
+    @JoinColumn(name = "reservation_id")
     private Reservation reservation;
 
     @ManyToOne
