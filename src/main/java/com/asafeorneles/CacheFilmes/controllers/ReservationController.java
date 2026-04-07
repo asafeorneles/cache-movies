@@ -6,10 +6,9 @@ import com.asafeorneles.CacheFilmes.services.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/reservations")
@@ -22,5 +21,11 @@ public class ReservationController {
     public ResponseEntity<ReservationResponse> create(@RequestBody ReservationRequest reservationRequest){
         ReservationResponse reservationResponse = reservationService.create(reservationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(reservationResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ReservationResponse>> listAll(){
+        List<ReservationResponse> reservationsResponse = reservationService.listAll();
+        return ResponseEntity.status(HttpStatus.OK).body(reservationsResponse);
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -75,9 +76,9 @@ public class ReservationService {
 
     }
 
-    private static List<Seat> getSeatsByName(Room room, List<String> seatsName, SeatRepository seatRepository){
+    private static List<Seat> getSeatsByName(Room room, List<String> seatsName, SeatRepository seatRepository) {
         List<Seat> seatsByName = new ArrayList<>();
-        for(String seatName : seatsName){
+        for (String seatName : seatsName) {
             // Mais seguro o back end obter pelo numero da coluna e da linha
             int rowNumber = SeatMapper.getRowNumber(seatName);
             int columnNumber = SeatMapper.getColumnNumber(seatName);
@@ -89,4 +90,28 @@ public class ReservationService {
         return seatsByName;
     }
 
+    public List<ReservationResponse> listAll() {
+        return reservationRepository.findAll()
+                .stream()
+                .map(reservation -> new ReservationResponse(
+                        reservation.getReservationId(),
+                        new SessionResponse(
+                                reservation.getSession().getSessionId(),
+                                reservation.getSession().getMovie().getMovieId(),
+                                reservation.getSession().getMovie().getName(),
+                                reservation.getSession().getRoom().getRoomId(),
+                                reservation.getSession().getRoom().getName(),
+                                reservation.getSession().getStartTime(),
+                                reservation.getSession().getEndTime(),
+                                reservation.getSession().getSessionType(),
+                                reservation.getSession().getSessionFormat().getFormat()
+                        ),
+                        reservation.getSeatReservations().stream().map(sr -> sr.getSeat().getSeatName()).toList(),
+                        reservation.getStatus(),
+                        reservation.getReservationDate(),
+                        reservation.getExpiresAt()
+                ))
+                .sorted(Comparator.comparing(rs -> rs.session().movieName()))
+                .toList();
+    }
 }
