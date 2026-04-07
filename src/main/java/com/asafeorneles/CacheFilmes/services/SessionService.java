@@ -77,7 +77,11 @@ public class SessionService {
     }
 
     private static void verifications(SessionRequest sessionRequest, Movie movie, Room room, SessionRepository sessionRepository){
-        // Talvez marcar a sessão como finalizada e criar métodos para verificar isso...
+        /*
+        Talvez marcar a sessão como finalizada através de um atributo de atividade
+        e criar métodos para verificar isso... Com isso, antes de fazer uma reserva, verificar o status da sessão
+        no ReservationService.
+        */
 
         if (sessionRequest.startTime().isBefore(LocalDateTime.now())){
             throw new ConflictBusinessException("The start date cannot be earlier than today.", null);

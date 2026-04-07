@@ -36,8 +36,6 @@ public class ReservationService {
 
         Room room = session.getRoom();
 
-        // Verificar se a sessão está ativa (Criar um atributo de atividade pra filtrar as sessões ativas em memória ou no db)...
-
         // Pega as seats que o usuário deseja pelo nome passado.
         List<Seat> seats = getSeatsByName(room, reservationRequest.seatsName(), seatRepository);
 
@@ -49,8 +47,6 @@ public class ReservationService {
                 .build();
 
         reservationRepository.save(reservation);
-
-        // Marcar como reservado (temporariamente)... Só depois do pagamento liberar
 
         List<SeatReservation> seatReservations = seatReservationService.makeReservation(seats, session, reservation);
 
