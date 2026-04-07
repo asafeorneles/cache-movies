@@ -19,14 +19,21 @@ API desenvolvida em Java com Spring Boot para controle e reserva de assentos de 
 - [x] Criação de reservas de assentos por sessão
 - [x] Controle de assentos disponíveis, reservados e ocupados
 - [ ] Controle de concorrência utilizando Redis
+- [ ] Busca dinâmica por parâmetros utilizando Specifications
 
 ## 🧱 Arquitetura e Boas Práticas
-- Arquitetura em camadas:
+- [x] Arquitetura em camadas:
   - Controller
   - Service
   - Repository
-- Uso de DTOs para transferência de dados em respostas e requisições
-- API baseada em princípios REST
+- [x] Uso de DTOs para transferência de dados em respostas e requisições
+- [x] Tratamento
+- [x] API baseada em princípios REST
+- [x] Exceções customizadas para regras de negócio
+- [x] Tratamento global de exceções
+- [ ] Validações de entrada com Bean Validation
+- [ ] Testes Unitários
+- [ ] Paginação de resultados de consultas no BD
 
 ## 🗂️ Estrutura
 
