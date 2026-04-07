@@ -4,6 +4,7 @@ import com.asafeorneles.CacheFilmes.dtos.SeatReservationResponse;
 import com.asafeorneles.CacheFilmes.dtos.SessionRequest;
 import com.asafeorneles.CacheFilmes.dtos.SessionResponse;
 import com.asafeorneles.CacheFilmes.entities.*;
+import com.asafeorneles.CacheFilmes.exeptions.ConflictBusinessException;
 import com.asafeorneles.CacheFilmes.exeptions.ResourceNotFoundExceptions;
 import com.asafeorneles.CacheFilmes.repositories.MovieRepository;
 import com.asafeorneles.CacheFilmes.repositories.RoomRepository;
@@ -13,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -29,11 +33,6 @@ public class SessionService {
     @Transactional
     public SessionResponse create(SessionRequest sessionRequest) {
 
-        // Verificar se a data de início da sessão é depois de hoje
-        // Verificar se a hora de término da sessão é maior do que o início + a duração do filme...
-        // regra para evitar duas sessões na mesma sala e no mesmo horário
-        // Talvez marcar a sessão como finalizada e criar métodos para verificar isso...
-
         Movie movie = movieRepository.findById(sessionRequest.movieId())
                 .orElseThrow(() -> new ResourceNotFoundExceptions(
                         "Movie not found by this id: " + sessionRequest.movieId(), null));
@@ -41,6 +40,8 @@ public class SessionService {
         Room room = roomRepository.findById(sessionRequest.roomId())
                 .orElseThrow(() -> new ResourceNotFoundExceptions(
                         "Room not found by this id: " + sessionRequest.roomId(), null));
+
+        verifications(sessionRequest, movie, room, sessionRepository);
 
         Session session = Session.builder()
                 .movie(movie)
@@ -73,6 +74,22 @@ public class SessionService {
                 session.getSessionType(),
                 session.getSessionFormat().getFormat()
         );
+    }
+
+    private static void verifications(SessionRequest sessionRequest, Movie movie, Room room, SessionRepository sessionRepository){
+        // Talvez marcar a sessão como finalizada e criar métodos para verificar isso...
+
+        if (sessionRequest.startTime().isBefore(LocalDateTime.now())){
+            throw new ConflictBusinessException("The start date cannot be earlier than today.", null);
+        }
+
+        if (sessionRequest.endTime().isBefore(sessionRequest.startTime().plusMinutes(movie.getDuration()))){
+            throw new ConflictBusinessException("The end date cannot be earlier than movie duration.", null);
+        }
+
+        if (sessionRepository.existsConflictingSession(room, sessionRequest.startTime(), sessionRequest.endTime())){
+            throw new ConflictBusinessException("There is already a session in this room at this time.", null);
+        }
     }
 
     public List<SessionResponse> listAll() {
